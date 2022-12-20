@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stud-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stud-front
+  template:
+    metadata:
+      labels:
+        app: stud-front
+    spec:
+      containers:
+        - name: stud-front
+          image: 1212dock/stud-front  
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: stud-front-srv
+spec:
+  selector:
+    app: stud-front
+  type: ClusterIP
+  ports:
+  - name: stud-front
+    port: 3000
+    targetPort: 3000

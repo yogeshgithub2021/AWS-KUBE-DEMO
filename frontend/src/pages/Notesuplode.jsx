@@ -43,7 +43,7 @@ const NotesUplode = () => {
         data.append("description", description.value);
         data.append("uploadFile", uploadFile.files[0]);
         try {
-            const fetchResponse = await fetch("http://localhost:3001/noteUpload", {
+            const fetchResponse = await fetch("http://worker.com/api/noteUpload", {
                 method: "POST",
                 body: data
             });

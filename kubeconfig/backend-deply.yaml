@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stud-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stud-back
+  template:
+    metadata:
+      labels:
+        app: stud-back
+    spec:
+      containers:
+        - name: stud-back
+          image: 1212dock/stud-back    
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: stud-back-srv
+spec:
+  selector:
+    app: stud-back
+  type: ClusterIP
+  ports:
+  - name: stud-back
+    port: 3001
+    targetPort: 3001

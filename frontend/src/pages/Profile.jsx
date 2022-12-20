@@ -28,7 +28,7 @@ const Profile = (props) => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const userResponse = await fetch("http://localhost:3001/user/" + loggedInUser._id);
+            const userResponse = await fetch("http://worker.com/api/user/" + loggedInUser._id);
             const resJson = await userResponse.json();
             if (userResponse.status === 200) {
                 setProfile(resJson);
@@ -63,7 +63,7 @@ const Profile = (props) => {
         data.append("phone", phone);
         data.append("profilePicture", profilePictureInput);
         alert("profile updated")
-        const updateResponse = await fetch("http://localhost:3001/update-profile", {
+        const updateResponse = await fetch("http://worker.com/api/update-profile", {
             method: "POST",
             body: data
         });

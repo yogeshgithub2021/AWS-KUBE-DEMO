@@ -23,7 +23,7 @@ app.use(express.json());
 
 // ------------------------ Authentication ---------------------------------------------
 
-app.post("/sign-up", async (req, res) => {
+app.post("/api/sign-up", async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
     try {
         const preUser = await UserModel.find({ email: email });
@@ -32,7 +32,7 @@ app.post("/sign-up", async (req, res) => {
             const User = await UserModel.create({ first_name, last_name, email, password });
             console.log(User);
             res.status(200).json(User);
-            // res.redirect("/sign-in");
+            // res.redirect("/api/sign-in");
         } else {
             res.status(400).json({ error: "Email Already Exists" });
         }
@@ -43,7 +43,7 @@ app.post("/sign-up", async (req, res) => {
     }
 })
 
-app.post("/sign-in", async (req, res) => {
+app.post("/api/sign-in", async (req, res) => {
     // console.log(req.body);
     const { email, password } = req.body;
     try {
@@ -65,13 +65,13 @@ var profileImageStorage = multer.diskStorage({
         cb(null, 'public/profile')
     },
     filename: function (req, file, cb) {
-        console.log("Inside multer", req.body);
+        console.log("/apiInside multer", req.body);
         cb(null, Date.now() + path.extname(file.originalname))
     }
 });
 const profilePictureUpload = multer({ storage: profileImageStorage })
 
-app.post("/update-profile", profilePictureUpload.single("profilePicture"), async (req, res) => {
+app.post("/api/update-profile", profilePictureUpload.single("/apiprofilePicture"), async (req, res) => {
     const { UserID, phone } = req.body;
     console.log(req.file);
     const profilePicture = req.file ? `${req.protocol}://${req.get('host')}/${req.file.path}` : "";
@@ -87,14 +87,14 @@ var noteStorage = multer.diskStorage({
         cb(null, 'public/notes')
     },
     filename: function (req, file, cb) {
-        console.log("Inside multer", req.body);
+        console.log("/apiInside multer", req.body);
         cb(null, req.body.fileName + Date.now() + path.extname(file.originalname))
     }
 });
 const noteUpload = multer({ storage: noteStorage })
 
-app.post("/noteUpload", noteUpload.single("uploadFile"), async (req, res) => {
-    console.log("Incoming Request");
+app.post("/api/noteUpload", noteUpload.single("/apiuploadFile"), async (req, res) => {
+    console.log("/apiIncoming Request");
     try {
         const { UserID, fileName, branch, description } = req.body;
         console.log(branch);
@@ -106,13 +106,13 @@ app.post("/noteUpload", noteUpload.single("uploadFile"), async (req, res) => {
             throw "Error Occured while uploading file"
         }
     } catch (error) {
-        console.log("/noteUpload", error);
+        console.log("/api/noteUpload", error);
         res.status(400).json(error);
     }
 
 })
 
-app.get("/allNotes", async (req, res) => {
+app.get("/api/allNotes", async (req, res) => {
     try {
         const NoteArray = await NotesUploadModel.find({});
         if (NoteArray) {
@@ -121,12 +121,12 @@ app.get("/allNotes", async (req, res) => {
             throw "something went wrong while fetching notes";
         }
     } catch (error) {
-        console.log("/allNotes", error);
+        console.log("/api/allNotes", error);
         res.status(400).json(error);
     }
 });
 
-app.get("/notes/:branch", async (req, res) => {
+app.get("/api/notes/:branch", async (req, res) => {
     try {
         const NoteArray = await NotesUploadModel.find(req.params);
         if (NoteArray) {
@@ -135,12 +135,12 @@ app.get("/notes/:branch", async (req, res) => {
             throw "something went wrong while fetching notes";
         }
     } catch (error) {
-        console.log("/allNotes", error);
+        console.log("/api/allNotes", error);
         res.status(400).json(error);
     }
 });
 
-app.get("/user/:id", async (req, res) => {
+app.get("/api/user/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const user = await UserModel.findById(id);
@@ -162,7 +162,7 @@ app.get("/user/:id", async (req, res) => {
 
 const PORT = 3001;
 
-const url = "mongodb+srv://Bishwajit:bishwajitsam@studiousrepo.z4evxkf.mongodb.net/?retryWrites=true&w=majority";
+const url = "mongodb://root:apPuTJQCOW@my-release-mongodb.default.svc.cluster.local:27017/?retryWrites=true&w=majority";
 
 const connectionParams = {
     useNewUrlParser: true,

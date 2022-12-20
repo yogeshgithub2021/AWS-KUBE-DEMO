@@ -19,7 +19,7 @@ const Notes = () => {
     const [branch, setBranch] = useState("All Notes");
     useEffect(() => {
         const fetchNotes = async () => {
-            const response = await fetch("http://localhost:3001/allNotes");
+            const response = await fetch("http://worker.com/api/allNotes");
             const resJson = await response.json();
             console.log(resJson);
             setNoteArray(resJson);
@@ -36,7 +36,7 @@ const Notes = () => {
     // sort function
     async function filterBranch(e) {
         setBranch(e.target.innerText);
-        const response = await fetch("http://localhost:3001/notes/" + e.target.innerText.toLowerCase());
+        const response = await fetch("http://worker.com/api/notes/" + e.target.innerText.toLowerCase());
         const resJson = await response.json();
         console.log(resJson);
         setNoteArray(resJson);
